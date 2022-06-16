@@ -22,7 +22,7 @@
 + [Authors Info](#author-Info)
 
 ## Description
-<P> A Clone Web Application for Instagram built with Python and Django where user (s) can Upload Pictures,View Posts,Like and Comment on various post in Instagram </p>
+<p>The application will allow a user to post a project he/she has created and get it reviewed by his/her peers based on Design,Usability and Content</p>
 
 ## User Stories
 <P>As a User I would like to:</p>
