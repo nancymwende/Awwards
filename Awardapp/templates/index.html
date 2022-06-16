@@ -3,12 +3,18 @@
 <h1>hello</h1>
 {% for post in posts %}
 
-<img src="{{post.image.url}}" alt="" srcset="">
-<a href="{{post.url}}">link</a>
+<div class="container-fluid">
+<div class="row col-md-6 mt-5 mb-5" >
+<img src="{{post.image.url}}" alt="" style =width:60%; height="100%">
+<div class = "row col-md-6 mt-5">
 {{post.title}}
 {{post.description}}
+<a href="{{post.url}}">View Site</a>
+<a href="{% url 'project_details' project_id=post.id %}">Click here</a>
+</div>
 
-
+</div>
+</div>
 
 {% endfor %}
 
