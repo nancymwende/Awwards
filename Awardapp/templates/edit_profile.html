@@ -1,0 +1,22 @@
+{% load bootstrap4 %}
+{%load static%}
+<div class="d-flex align-items-center justify-content-center">
+    {% if user.profile.profile_photo %}
+    <img src="{{user.profile.profile_photo.url}}" class="rounded-circle" alt="" style="width: 170px; height: 170px; ">
+    <h5>{{user.username}}</h5>
+    <h5>{{user.bio}}</h5>
+    {% else %}
+    <img src="/static/images/mwende.png" alt="" style="width: 100px; height: 100px; border-radius: 50%;">
+    <h5 class="me-5">{{user.username}}</h5>
+    {% endif %}
+
+<form action="" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+
+    {% bootstrap_form form%}
+    <input type="submit" class="btn btn-success btn-lg" value="Post">
+</form>
+
+{% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% bootstrap_javascript %} {% endblock %}
