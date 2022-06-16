@@ -2,14 +2,14 @@
 
 #### By Nancy Mwende
 
-### SignUpPage
-![nancy](/static/images/instagram.png)
+### indexpage
+![nancy](/static/images/instadep.png)
 
-### LoginPage
-![nancy](/static/images/logininsta.png)
+### Profilepage
+![nancy](/static/images/profile.png)
 
-### HomePage
-![nancy](/static/images/registerinsta.png)
+### PostPage
+![nancy](/static/images/post.png)
 
 ## Table of Content
 
@@ -35,7 +35,7 @@
 * View my profile page
 
 ## Live Link
-<https://instanancy.herokuapp.com/>
+
 
 ## Installation
 
