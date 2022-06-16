@@ -6,6 +6,15 @@
     {% else %}
     <img src="/static/images/mwende.png" alt="" style="width: 100px; height: 100px; border-radius: 50%;">
     <h5 class="me-5">{{user.username}}</h5>
+    
+    <div class="container" style="text-align:center">
+    <form action="" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+
+        {{ form}}
+        <input type="submit" class="btn btn-success btn-lg" value="Post">
+    </form>
+    </div>
     {% endif %}
     
     

@@ -7,7 +7,11 @@ from .models import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializer import ProfileSerializer,PostSerializer
+from Awardapp import serializer
+from .permissions import IsAdminOrReadOnly
+from rest_framework.response import Response
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -25,72 +29,59 @@ def register(request):
     return render(request, 'register.html',{'form':form})
     
 def login(request):
+    return render(request, 'login.html')
+    
+def logout(request):
     return render(request, 'login.html')    
     
+@login_required(login_url="/accounts/login/")    
 def profile(request):
     if request.method == 'POST':
-        form = UserProfile(request.POST,request.FILES,instance=request.user.profile)
+        form = UserProfile(request.POST,request.FILES,instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('welcome')
     else:
         form = UserProfile()
     return render(request,'profile.html', {'form':form})
     
+@login_required(login_url='/accounts/login/')    
 def editprofile(request):
     if request.method == 'POST':
-        form = EditProfile(request.POST,request.FILES,instance=request.user.profile)
+        form = EditProfile(request.POST,request.FILES,instance=request.user)
         if form.is_valid():
+            profile = Profile(user=request.user)
+            profile.save()
             form.save()
             return redirect('profile')
     else:
         form = EditProfile()
     return render(request,'profile.html', {'form':form})
-    
-# def projectform(request):
-#     if request.method == 'POST':
-#         form = ProjectForm(request.POST,request.FILES,instance=request.user.profile)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('profile')
-#     else:
-#         form = ProjectForm()
-#     return render(request,'project.html', {'form':form})
 
+@login_required(login_url="/accounts/login/")
 def post(request):
     if request.method == 'POST':
         form = ProjectsForm(request.POST, request.FILES)
+        print (form.errors)
+        print(form.is_valid)
         if form.is_valid():
-            projects = form.save(commit=False)
-            projects.user = request.User
-            projects.save()
-        return redirect('index')
+            post = form.save(commit=False)
+            post.user = (request.user)
+            post.save()
+            return redirect('welcome')
+        return render(request, 'post.html', {'form': form})
     else:
-        form =ProjectsForm(request.POST)
-    return render(request, 'post.html', {'form': form})
+        
+        form =ProjectsForm()
+        return render(request, 'post.html', {'form': form})
 
 
-# def post(request):
-#     current_user = request.user
-#     profiles = Profile.objects.all()
-#     for profile in profiles:
-#         if profile.user.id == current_user.id:
-#             if request.method == 'POST':
-#                 form = ProjectsForm(request.POST,request.FILES)
-#                 if form.is_valid():
-#                     upload = form.save(commit=False)
-#                     upload.posted_by = current_user
-#                     upload.profile = profile
-#                     upload.save()
-#                     return redirect('index')
-#             else:
-#                 form = ProjectsForm()
-#             return render(request,'post.html',{"form":form})
+
 def project_details(request, project_id):
     form = RatingForm()
     current_user = request.user
     all_ratings = Rating.objects.filter(post=project_id).all()
-    post = Post.objects.get(pk = project_id)
+    post = Post.objects.filter(pk = project_id)
     ratings = Rating.objects.filter(user=request.user,post=project_id).first()
     rating_status = None
     if ratings is None:
