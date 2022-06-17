@@ -35,7 +35,7 @@
 * View my profile page
 
 ## Live Link
-<a href="https://nanawwards.herokuapp.com/">
+https://nanawwards.herokuapp.com/
 
 ## Installation
 
