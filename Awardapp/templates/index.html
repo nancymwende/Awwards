@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>WELCOME TO AWWARDS</h1>
+
 {% for post in posts %}
 
 <div class="container-fluid">
-<div class="row col-md-6 mt-5 mb-5" >
-<img src="{{post.image.url}}" alt="" style =width:100%; height="100%">
-<div class = "row col-md-6 mt-5">
+<div class="row col-md-6 mt-5 mb-2" >
+<img src="{{post.image.url}}" alt="" style =width:100%; height="80%">
+<div class = "row col-md-6 mt-4">
+<br><br>
 {{post.title}}
-<br><br><br><br>
+<br><br>
 {{post.description}}
-<br><br><br>
+<br><br><br><br>
 <a href="{{post.url}}">View Site</a>
-<a href="{% url 'project_details' project_id=post.id %}">Rate</a>
+<a href="{% url 'project_details' project_id=post.id %}">Rate Site</a>
 </div>
 
 </div>

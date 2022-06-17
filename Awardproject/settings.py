@@ -50,7 +50,7 @@ cloudinary.config(
 
 INSTALLED_APPS = [
     'Awardapp.apps.AwardappConfig',
-    'bootstrap4',
+    'django_bootstrap5',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',

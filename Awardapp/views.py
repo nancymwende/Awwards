@@ -9,9 +9,10 @@ from rest_framework.views import APIView
 from .serializer import ProfileSerializer,PostSerializer
 from Awardapp import serializer
 from .permissions import IsAdminOrReadOnly
-from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout,authenticate
+from django.contrib.auth import login as logins
 
 
 # Create your views here.
@@ -25,14 +26,32 @@ def register(request):
     if request.method == 'POST':
         form = NewUserform(request.POST)
         if form.is_valid():
-            form.save()
-    return render(request, 'register.html',{'form':form})
+            new_user = form.save()
+            
+            user_profile=Profile(
+                user=new_user,
+            )
+            #user_profile.save_profile()
+            
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'],)
+            logins(request, new_user)
+            return redirect('index')    
+    return render(request, 'registration/registration_form.html',{'form':form},)
     
 def login(request):
-    return render(request, 'login.html')
+    form = LoginForm()
     
-def logout(request):
-    return render(request, 'login.html')    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password1')
+        
+        user = authenticate(request, username = username, password = password)
+        
+        if user is not None:
+            login(request,user)
+            return redirect('index')
+    return render(request, 'login.html',{'form':form})   
     
 @login_required(login_url="/accounts/login/")    
 def profile(request):
@@ -120,6 +139,7 @@ def project_details(request, project_id):
     
     
 class ProfileList(APIView):
+    permission_classes = (IsAdminOrReadOnly,)
     def get(self,request,format=None):
         profiles = Profile.objects.all()
         serializers = ProfileSerializer(profiles,many = True)
@@ -127,6 +147,7 @@ class ProfileList(APIView):
         
         
 class PostList(APIView):
+    permission_classes = (IsAdminOrReadOnly,)
     def get(self,request,format=None):
         posts = Post.objects.all()
         serializers = PostSerializer(posts,many = True)
