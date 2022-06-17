@@ -36,7 +36,7 @@ def register(request):
             new_user = authenticate(username=form.cleaned_data['username'],
                                     password=form.cleaned_data['password1'],)
             logins(request, new_user)
-            return redirect('index')    
+            return redirect('welcome')    
     return render(request, 'registration/registration_form.html',{'form':form},)
     
 def login(request):
